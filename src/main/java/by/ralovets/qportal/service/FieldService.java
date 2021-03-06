@@ -1,6 +1,6 @@
 package by.ralovets.qportal.service;
 
-import by.ralovets.qportal.dto.FieldDTO;
+import by.ralovets.qportal.domain.dto.FieldDTO;
 import by.ralovets.qportal.service.exception.ServiceException;
 
 import java.util.List;

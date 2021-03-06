@@ -1,9 +1,9 @@
 package by.ralovets.qportal.service.impl;
 
-import by.ralovets.qportal.dto.FieldDTO;
-import by.ralovets.qportal.entity.Field;
-import by.ralovets.qportal.entity.Option;
-import by.ralovets.qportal.entity.util.FieldType;
+import by.ralovets.qportal.domain.dto.FieldDTO;
+import by.ralovets.qportal.domain.entity.Field;
+import by.ralovets.qportal.domain.entity.Option;
+import by.ralovets.qportal.domain.entity.util.FieldType;
 import by.ralovets.qportal.repository.FieldRepository;
 import by.ralovets.qportal.repository.OptionRepository;
 import by.ralovets.qportal.service.FieldService;

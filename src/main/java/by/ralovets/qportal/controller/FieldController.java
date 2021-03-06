@@ -1,6 +1,6 @@
 package by.ralovets.qportal.controller;
 
-import by.ralovets.qportal.dto.FieldDTO;
+import by.ralovets.qportal.domain.dto.FieldDTO;
 import by.ralovets.qportal.service.FieldService;
 import by.ralovets.qportal.service.exception.ServiceException;
 import lombok.AllArgsConstructor;

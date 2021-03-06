@@ -1,7 +1,7 @@
-package by.ralovets.qportal.entity;
+package by.ralovets.qportal.domain.entity;
 
-import by.ralovets.qportal.entity.util.FieldType;
-import by.ralovets.qportal.entity.util.PostgreSQLEnumType;
+import by.ralovets.qportal.domain.entity.util.FieldType;
+import by.ralovets.qportal.domain.entity.util.PostgreSQLEnumType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Type;

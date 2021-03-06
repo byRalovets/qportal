@@ -1,7 +1,7 @@
-package by.ralovets.qportal.dto;
+package by.ralovets.qportal.domain.dto;
 
-import by.ralovets.qportal.entity.Field;
-import by.ralovets.qportal.entity.Option;
+import by.ralovets.qportal.domain.entity.Field;
+import by.ralovets.qportal.domain.entity.Option;
 import lombok.Data;
 
 import java.util.List;

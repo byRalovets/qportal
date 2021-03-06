@@ -1,4 +1,4 @@
-package by.ralovets.qportal.entity;
+package by.ralovets.qportal.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

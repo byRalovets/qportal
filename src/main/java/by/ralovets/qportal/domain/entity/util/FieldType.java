@@ -1,4 +1,4 @@
-package by.ralovets.qportal.entity.util;
+package by.ralovets.qportal.domain.entity.util;
 
 public enum FieldType {
     SINGLELINE,
