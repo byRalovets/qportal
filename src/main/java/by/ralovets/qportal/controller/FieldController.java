@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("fields")
+@RequestMapping("/api/fields")
 public class FieldController {
 
     private final FieldService fieldService;
