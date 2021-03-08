@@ -1,4 +1,4 @@
-package by.ralovets.qportal.payload.response;
+package by.ralovets.qportal.domain.payload.response;
 
 import lombok.Data;
 
