@@ -24,6 +24,6 @@ public class FieldTypeUtils {
     }
 
     public static boolean wasOptionsBecomeOptions(FieldType was, FieldType become) {
-        return textualTypes.contains(was) && textualTypes.contains(become);
+        return optionalTypes.contains(was) && optionalTypes.contains(become);
     }
 }

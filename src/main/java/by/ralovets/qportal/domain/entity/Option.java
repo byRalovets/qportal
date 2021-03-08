@@ -25,4 +25,8 @@ public class Option {
 
     public Option() {
     }
+
+    public Option(String text, Field field) {
+        this.text = text;
+    }
 }

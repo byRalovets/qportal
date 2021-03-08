@@ -10,12 +10,15 @@ import by.ralovets.qportal.service.FieldService;
 import by.ralovets.qportal.service.exception.ServiceException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static by.ralovets.qportal.domain.dto.mapper.FieldMapper.*;
 import static by.ralovets.qportal.service.util.FieldTypeUtils.*;
 
 @Service
@@ -27,76 +30,56 @@ public class FieldServiceImpl implements FieldService {
 
     @Override
     public void createField(FieldDTO fieldDTO) {
-        Field field = fieldDTO.getField();
-        List<Option> options = fieldDTO.getOptions();
-        options.forEach(o -> o.setField(field));
+        Field field = mapToField(fieldDTO);
+        List<Option> options = mapToOptions(fieldDTO);
 
         fieldRepository.save(field);
+
+        options.forEach(o -> o.setField(field));
         optionRepository.saveAll(options);
     }
 
+    @Transactional
     @Override
     public FieldDTO updateField(FieldDTO fieldDTO, Integer id) {
-        FieldDTO resultFieldDTO = new FieldDTO();
 
-        Field newField = fieldDTO.getField();
-        List<Option> newOptions = fieldDTO.getOptions();
-
-        if (newOptions != null && newOptions.size() != 0)
-            newOptions.forEach(o -> o.setField(newField));
+        Field newField = mapToField(fieldDTO);
+        final List<Option> newOptions = Objects
+                .requireNonNullElse(mapToOptions(fieldDTO), new ArrayList<>());
 
         return fieldRepository.findById(id)
                 .map(field -> {
-                    field.setLabel(newField.getLabel());
-                    field.setIsActive(newField.getIsActive());
-                    field.setRequired(newField.getRequired());
+                    newOptions.forEach(option -> option.setField(field));
 
                     FieldType was = field.getType();
                     FieldType become = newField.getType();
 
                     if (wasTextBecomeOptions(was, become)) {
-                        if (newOptions != null) {
-                            newOptions.forEach(o -> o.setField(field));
-                            optionRepository.saveAll(newOptions);
-                        }
+                        optionRepository.saveAll(newOptions);
                     } else if (wasOptionsBecomeText(was, become)) {
-                        fieldRepository.findById(id).ifPresent(f -> {
-                            optionRepository.findByFieldId(f.getId())
-                                    .forEach(option -> optionRepository.deleteById(option.getId()));
-                        });
+                        optionRepository.removeByFieldId(id);
                     } else if (wasOptionsBecomeOptions(was, become)) {
-                        fieldRepository.findById(id).ifPresent(f -> {
-                            optionRepository.findByFieldId(f.getId())
-                                    .forEach(option -> optionRepository.deleteById(option.getId()));
-                        });
-                        if (newOptions != null && newOptions.size() > 0) {
-                            newOptions.forEach(o -> o.setField(field));
-                            optionRepository.saveAll(newOptions);
-                        }
+                        optionRepository.removeByFieldId(id);
+                        optionRepository.saveAll(newOptions);
                     }
 
                     field.setType(newField.getType());
+                    field.setLabel(newField.getLabel());
+                    field.setIsActive(newField.getIsActive());
+                    field.setRequired(newField.getRequired());
 
                     fieldRepository.save(field);
 
-                    resultFieldDTO.setField(field);
-                    resultFieldDTO.setOptions(newOptions);
-
-                    return resultFieldDTO;
+                    return mapToDTO(field, newOptions);
                 })
                 .orElseGet(() -> {
-                    if (newOptions != null) {
-                        newOptions.forEach(o -> o.setField(newField));
-                        optionRepository.saveAll(newOptions);
-                    }
                     newField.setId(id);
-
                     fieldRepository.save(newField);
 
-                    resultFieldDTO.setField(newField);
-                    resultFieldDTO.setOptions(new ArrayList<>(newField.getOptions()));
+                    newOptions.forEach(o -> o.setField(newField));
+                    optionRepository.saveAll(newOptions);
 
-                    return resultFieldDTO;
+                    return mapToDTO(newField, newOptions);
                 });
     }
 
@@ -114,7 +97,7 @@ public class FieldServiceImpl implements FieldService {
         List<Option> options = StreamSupport.stream(optionRepository.findByFieldId(id).spliterator(), false)
                 .collect(Collectors.toList());
 
-        return new FieldDTO(field, options);
+        return mapToDTO(field, options);
     }
 
     @Override
@@ -127,7 +110,7 @@ public class FieldServiceImpl implements FieldService {
                     .stream(optionRepository.findByFieldId(field.getId()).spliterator(), false)
                     .collect(Collectors.toList());
 
-            fieldDTOList.add(new FieldDTO(field, options));
+            fieldDTOList.add(mapToDTO(field, options));
         });
 
         return fieldDTOList;
