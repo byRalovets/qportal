@@ -1,6 +1,6 @@
 package by.ralovets.qportal.sequrity.service;
 
-import by.ralovets.qportal.domain.entity.User;
+import by.ralovets.qportal.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -19,16 +18,22 @@ public class UserDetailsImpl implements UserDetails {
 
     private final String email;
 
+    private final String firstName;
+
+    private final String lastName;
+
     @JsonIgnore
     private final String password;
 
-    private Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-    public UserDetailsImpl(Long id, String email, String password,
+    public UserDetailsImpl(Long id, String email, String password, String firstName, String lastName,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.authorities = authorities;
     }
 
@@ -39,6 +44,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getId(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getFirstName(),
+                user.getLastName(),
                 authorities);
     }
 
@@ -63,6 +70,14 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getUsername() {
         return null;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
     }
 
     @Override

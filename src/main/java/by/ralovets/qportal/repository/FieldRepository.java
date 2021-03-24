@@ -1,7 +1,13 @@
 package by.ralovets.qportal.repository;
 
-import by.ralovets.qportal.domain.entity.Field;
-import org.springframework.data.repository.CrudRepository;
+import by.ralovets.qportal.model.Field;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface FieldRepository extends CrudRepository<Field, Integer> {
+/**
+ * CrudRepository implementation for Field entity.
+ *
+ * @author Anton Ralovets
+ * @version 1.0.0
+ */
+public interface FieldRepository extends PagingAndSortingRepository<Field, Integer> {
 }

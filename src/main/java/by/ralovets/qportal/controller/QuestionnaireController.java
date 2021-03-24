@@ -1,20 +1,23 @@
 package by.ralovets.qportal.controller;
 
-import by.ralovets.qportal.domain.dto.FieldDTO;
-import by.ralovets.qportal.domain.dto.ResponseDTO;
-import by.ralovets.qportal.service.FieldService;
+import by.ralovets.qportal.dto.FieldDTO;
+import by.ralovets.qportal.dto.FieldHeaderDTO;
+import by.ralovets.qportal.dto.ResponseDTO;
 import by.ralovets.qportal.service.QuestionnaireService;
+import by.ralovets.qportal.service.ResultsService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@AllArgsConstructor
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/questionnaire")
+@AllArgsConstructor
+@RestController
 public class QuestionnaireController {
 
     private final QuestionnaireService questionnaireService;
+    private final ResultsService resultsService;
 
     @GetMapping
     List<FieldDTO> getQuestionnaire() {
@@ -26,8 +29,8 @@ public class QuestionnaireController {
         questionnaireService.newResponse(responseDTO);
     }
 
-    @GetMapping("/results")
-    List<ResponseDTO> getResponses() {
-        return questionnaireService.getResponses();
+    @GetMapping("/headers")
+    List<FieldHeaderDTO> getFieldHeaders() {
+        return resultsService.getFieldHeaders();
     }
 }

@@ -1,7 +1,13 @@
 package by.ralovets.qportal.repository;
 
-import by.ralovets.qportal.domain.entity.Response;
-import org.springframework.data.repository.CrudRepository;
+import by.ralovets.qportal.model.Response;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
-public interface ResponseRepository extends CrudRepository<Response, Long> {
+/**
+ * CrudRepository implementation for Response entity.
+ *
+ * @author Anton Ralovets
+ * @version 1.0.0
+ */
+public interface ResponseRepository extends PagingAndSortingRepository<Response, Long> {
 }

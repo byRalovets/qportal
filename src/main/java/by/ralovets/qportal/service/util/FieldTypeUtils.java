@@ -1,11 +1,11 @@
 package by.ralovets.qportal.service.util;
 
-import by.ralovets.qportal.domain.entity.util.FieldType;
+import by.ralovets.qportal.model.util.FieldType;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static by.ralovets.qportal.domain.entity.util.FieldType.*;
+import static by.ralovets.qportal.model.util.FieldType.*;
 
 public class FieldTypeUtils {
 
