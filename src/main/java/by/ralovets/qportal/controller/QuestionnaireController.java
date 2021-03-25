@@ -3,8 +3,8 @@ package by.ralovets.qportal.controller;
 import by.ralovets.qportal.dto.FieldDTO;
 import by.ralovets.qportal.dto.FieldHeaderDTO;
 import by.ralovets.qportal.dto.ResponseDTO;
-import by.ralovets.qportal.service.QuestionnaireService;
-import by.ralovets.qportal.service.ResultsService;
+import by.ralovets.qportal.service.FormService;
+import by.ralovets.qportal.service.ResultService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,21 +16,21 @@ import java.util.List;
 @RestController
 public class QuestionnaireController {
 
-    private final QuestionnaireService questionnaireService;
-    private final ResultsService resultsService;
+    private final FormService formService;
+    private final ResultService resultService;
 
     @GetMapping
     List<FieldDTO> getQuestionnaire() {
-        return questionnaireService.getQuestionnaire();
+        return formService.getFields();
     }
 
     @PostMapping
     void newResponse(@RequestBody ResponseDTO responseDTO) {
-        questionnaireService.newResponse(responseDTO);
+        formService.addResponse(responseDTO);
     }
 
     @GetMapping("/headers")
     List<FieldHeaderDTO> getFieldHeaders() {
-        return resultsService.getFieldHeaders();
+        return resultService.getFieldHeaders();
     }
 }

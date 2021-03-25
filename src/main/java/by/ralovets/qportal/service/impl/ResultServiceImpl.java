@@ -9,7 +9,7 @@ import by.ralovets.qportal.model.Response;
 import by.ralovets.qportal.repository.AnswerRepository;
 import by.ralovets.qportal.repository.FieldRepository;
 import by.ralovets.qportal.repository.ResponseRepository;
-import by.ralovets.qportal.service.ResultsService;
+import by.ralovets.qportal.service.ResultService;
 import by.ralovets.qportal.service.util.Paginator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ import static by.ralovets.qportal.service.util.IterableUtils.asList;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ResultsServiceImpl implements ResultsService {
+public class ResultServiceImpl implements ResultService {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
     private static final String WS_MESSAGE_TRANSFER_DESTINATION = "/topic/greetings";
@@ -43,7 +43,7 @@ public class ResultsServiceImpl implements ResultsService {
     private final FieldRepository fieldRepository;
 
     @Override
-    public ResultsPageDTO getResponses(int page, int count) {
+    public ResultsPageDTO getResults(int page, int count) {
         log.info("First request: " + page + " " + count);
         Pageable pageable = PageRequest.of(page - 1, count);
 

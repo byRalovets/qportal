@@ -7,7 +7,7 @@ import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsImpl;
 import by.ralovets.qportal.service.MailSenderService;
-import by.ralovets.qportal.service.UserService;
+import by.ralovets.qportal.service.UserProfileService;
 import by.ralovets.qportal.service.exception.InvalidArgumentException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,7 +21,7 @@ import static java.util.Objects.isNull;
 
 @Service
 @AllArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserProfileServiceImpl implements UserProfileService {
 
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;

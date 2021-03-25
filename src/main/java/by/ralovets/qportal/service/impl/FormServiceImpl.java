@@ -9,7 +9,7 @@ import by.ralovets.qportal.repository.AnswerRepository;
 import by.ralovets.qportal.repository.FieldRepository;
 import by.ralovets.qportal.repository.OptionRepository;
 import by.ralovets.qportal.repository.ResponseRepository;
-import by.ralovets.qportal.service.QuestionnaireService;
+import by.ralovets.qportal.service.FormService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import static by.ralovets.qportal.service.util.IterableUtils.asList;
 
 @Service
 @AllArgsConstructor
-public class QuestionnaireServiceImpl implements QuestionnaireService {
+public class FormServiceImpl implements FormService {
 
     private final ResponseRepository responseRepository;
     private final AnswerRepository answerRepository;
@@ -33,7 +33,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     private final OptionRepository optionRepository;
 
     @Override
-    public void newResponse(ResponseDTO dto) {
+    public void addResponse(ResponseDTO dto) {
         Response response = new Response();
         responseRepository.save(response);
 
@@ -45,7 +45,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     @Override
-    public List<FieldDTO> getQuestionnaire() {
+    public List<FieldDTO> getFields() {
         List<FieldDTO> fieldDTOList = new ArrayList<>();
 
         StreamSupport

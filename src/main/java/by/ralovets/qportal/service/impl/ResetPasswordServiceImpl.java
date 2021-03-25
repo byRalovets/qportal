@@ -4,7 +4,7 @@ import by.ralovets.qportal.dto.ResetPasswordDTO;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.service.MailSenderService;
-import by.ralovets.qportal.service.PasswordResetService;
+import by.ralovets.qportal.service.ResetPasswordService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class PasswordResetServiceImpl implements PasswordResetService {
+public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final MailSenderService mailSender;
     private final String baseLink = "http://localhost:4200/reset-password?token=";
@@ -29,7 +29,7 @@ public class PasswordResetServiceImpl implements PasswordResetService {
     private final JwtUtils jwtUtils;
 
     @Override
-    public void sendResetEmail(String email) {
+    public void sendEmailLink(String email) {
         if (!userRepository.existsByEmail(email)) return;
 
         String token = UUID.randomUUID().toString();

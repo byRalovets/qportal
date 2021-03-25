@@ -1,7 +1,7 @@
 package by.ralovets.qportal.controller;
 
 import by.ralovets.qportal.dto.ResetPasswordDTO;
-import by.ralovets.qportal.service.PasswordResetService;
+import by.ralovets.qportal.service.ResetPasswordService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class PasswordResetController {
 
-    private final PasswordResetService passwordResetService;
+    private final ResetPasswordService resetPasswordService;
 
     @PostMapping
     void newField(@RequestBody String email) {
-        passwordResetService.sendResetEmail(email);
+        resetPasswordService.sendEmailLink(email);
     }
 
     @PutMapping
     void resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
-        passwordResetService.resetPassword(resetPasswordDTO);
+        resetPasswordService.resetPassword(resetPasswordDTO);
     }
 }

@@ -6,10 +6,8 @@ import by.ralovets.qportal.dto.ResultsPageDTO;
 
 import java.util.List;
 
-public interface ResultsService {
-
-    ResultsPageDTO getResponses(int page, int count);
+public interface ResultService {
     List<FieldHeaderDTO> getFieldHeaders();
-    void addSubscriber(String username, ResultsPageRequestDTO request);
+    void addSubscriber(String userId, ResultsPageRequestDTO request);
     void sendResponses();
 }

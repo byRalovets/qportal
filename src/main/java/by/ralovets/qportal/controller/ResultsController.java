@@ -2,7 +2,7 @@ package by.ralovets.qportal.controller;
 
 import by.ralovets.qportal.dto.ResultsPageDTO;
 import by.ralovets.qportal.dto.ResultsPageRequestDTO;
-import by.ralovets.qportal.service.ResultsService;
+import by.ralovets.qportal.service.ResultService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,13 +23,13 @@ import java.util.UUID;
 @Slf4j
 public class ResultsController {
 
-    private final ResultsService resultsService;
+    private final ResultService resultService;
 
     @MessageMapping("/responses")
     @SendToUser("/topic/greetings")
     public ResultsPageDTO greeting(ResultsPageRequestDTO request, Principal principal) {
-        resultsService.addSubscriber(principal.getName(), request);
-        return resultsService.getResponses(request.getPage(), request.getCount());
+        resultService.addSubscriber(principal.getName(), request);
+        return resultService.getResults(request.getPage(), request.getCount());
     }
 
     @GetMapping("/websocket-token")

@@ -25,4 +25,8 @@ public class Paginator<T> {
     public Integer getTotalPages(int pageSize) {
         return (int) Math.ceil(elements.size() / ((double) pageSize));
     }
+
+    public Integer getTotalElements() {
+        return elements.size();
+    }
 }

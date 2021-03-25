@@ -5,9 +5,8 @@ import by.ralovets.qportal.dto.ResponseDTO;
 
 import java.util.List;
 
-public interface QuestionnaireService {
+public interface FormService {
+    void addResponse(ResponseDTO dto);
 
-    void newResponse(ResponseDTO dto);
-    List<FieldDTO> getQuestionnaire();
-
+    List<FieldDTO> getFields();
 }

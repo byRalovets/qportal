@@ -9,5 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface AuthService {
     JwtResponseDTO login(LoginRequestDTO loginRequest);
+
     JwtResponseDTO signup(SignupRequestDTO signupRequest) throws InvalidArgumentException;
 }
