@@ -1,8 +1,12 @@
 package by.ralovets.qportal.service.impl;
 
+import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.dto.ResetPasswordDTO;
+import by.ralovets.qportal.exception.ResourceNotFoundException;
+import by.ralovets.qportal.model.User;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
+import by.ralovets.qportal.sequrity.service.UserDetailsImpl;
 import by.ralovets.qportal.service.MailSenderService;
 import by.ralovets.qportal.service.ResetPasswordService;
 import lombok.AllArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -22,40 +27,59 @@ import java.util.UUID;
 public class ResetPasswordServiceImpl implements ResetPasswordService {
 
     private final MailSenderService mailSender;
-    private final String baseLink = "http://localhost:4200/reset-password?token=";
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
 
+    private final String resetPasswordPath = "http://localhost:4200/reset-password?token=%s";
+
+    private static final String MSG_SUBJECT = "Reset your password";
+    private static final String MSG_TEXT_PATTERN = "To reset your password click this link:\n%s";
+    public static final String MSG_INVALID_RESET_TOKEN = "Token does't exist. Try again";
+
     @Override
     public void sendEmailLink(String email) {
         if (!userRepository.existsByEmail(email)) return;
 
-        String token = UUID.randomUUID().toString();
-
         userRepository.findByEmail(email).ifPresent(user -> {
+            String token = UUID.randomUUID().toString();
+            String link = String.format(resetPasswordPath, token);
+
             user.setResetPasswordToken(token);
             userRepository.save(user);
-            String link = baseLink + token;
-            mailSender.send(email,
-                    "Reset your password",
-                    String.format("To reset your password click this link:\n%s", link));
+
+            mailSender.send(email, MSG_SUBJECT, String.format(MSG_TEXT_PATTERN, link));
         });
     }
 
     @Override
-    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
-        userRepository.findByResetPasswordToken(resetPasswordDTO.getToken()).ifPresent(user -> userRepository.findByEmail(user.getEmail())
-                .ifPresent(u -> {
-                    u.setPassword(encoder.encode(resetPasswordDTO.getPassword()));
-                    u.setResetPasswordToken(null);
-                    userRepository.save(user);
+    public JwtResponseDTO resetPassword(ResetPasswordDTO resetPasswordDTO) throws ResourceNotFoundException {
+        Optional<User> userOptional = userRepository.findByResetPasswordToken(resetPasswordDTO.getToken());
 
-                    Authentication authentication = authenticationManager.authenticate(
-                            new UsernamePasswordAuthenticationToken(user.getEmail(), resetPasswordDTO.getPassword()));
+        if (userOptional.isEmpty())
+            throw new ResourceNotFoundException(MSG_INVALID_RESET_TOKEN);
 
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }));
+        User user = userOptional.get();
+
+        user.setPassword(encoder.encode(resetPasswordDTO.getPassword()));
+        user.setResetPasswordToken(null);
+        userRepository.save(user);
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(user.getEmail(), resetPasswordDTO.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        return new JwtResponseDTO(
+                jwt,
+                userDetails.getId(),
+                userDetails.getEmail(),
+                userDetails.getFirstName(),
+                userDetails.getLastName()
+        );
     }
 }

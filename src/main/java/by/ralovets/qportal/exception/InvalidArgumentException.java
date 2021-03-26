@@ -1,6 +1,6 @@
-package by.ralovets.qportal.service.exception;
+package by.ralovets.qportal.exception;
 
-public class InvalidArgumentException extends Exception {
+public class InvalidArgumentException extends RuntimeException {
 
     public InvalidArgumentException() {
         super();

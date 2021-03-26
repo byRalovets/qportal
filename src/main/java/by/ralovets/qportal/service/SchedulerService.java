@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class SchedulerService {
+
     private final ResultService resultService;
 
     @Scheduled(fixedRateString = "8000", initialDelayString = "0")

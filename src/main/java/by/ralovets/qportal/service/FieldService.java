@@ -2,10 +2,11 @@ package by.ralovets.qportal.service;
 
 import by.ralovets.qportal.dto.FieldDTO;
 import by.ralovets.qportal.dto.FieldsPageDTO;
-import by.ralovets.qportal.service.exception.InvalidArgumentException;
-import by.ralovets.qportal.service.exception.ResourceNotFoundException;
+import by.ralovets.qportal.exception.InvalidArgumentException;
+import by.ralovets.qportal.exception.ResourceNotFoundException;
 
 public interface FieldService {
+
     FieldDTO createField(FieldDTO field) throws InvalidArgumentException;
 
     FieldDTO updateField(FieldDTO field, Integer id) throws InvalidArgumentException;

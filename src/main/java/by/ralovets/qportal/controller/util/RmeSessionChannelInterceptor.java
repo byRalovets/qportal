@@ -1,4 +1,4 @@
-package by.ralovets.qportal.controller;
+package by.ralovets.qportal.controller.util;
 
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsServiceImpl;

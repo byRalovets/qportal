@@ -3,13 +3,14 @@ package by.ralovets.qportal.service.impl;
 import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.dto.LoginRequestDTO;
 import by.ralovets.qportal.dto.SignupRequestDTO;
+import by.ralovets.qportal.exception.InvalidArgumentException;
+import by.ralovets.qportal.exception.ResourceNotFoundException;
 import by.ralovets.qportal.model.User;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsImpl;
 import by.ralovets.qportal.service.AuthService;
 import by.ralovets.qportal.service.MailSenderService;
-import by.ralovets.qportal.service.exception.InvalidArgumentException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,8 +29,15 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtils jwtUtils;
     private final MailSenderService mailSender;
 
+    private static final String MSG_USER_NOT_FOUND = "User with this email doesn't exist!";
+    private static final String MSG_USER_ALREADY_EXISTS = "Email is already in use!";
+
     @Override
     public JwtResponseDTO login(LoginRequestDTO loginRequest) {
+        if (!userRepository.existsByEmail(loginRequest.getEmail())) {
+            throw new ResourceNotFoundException(MSG_USER_NOT_FOUND);
+        }
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -48,9 +56,9 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponseDTO signup(SignupRequestDTO signupRequest) throws InvalidArgumentException {
+    public JwtResponseDTO signup(SignupRequestDTO signupRequest) {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new InvalidArgumentException("Error: Email is already in use!");
+            throw new InvalidArgumentException(MSG_USER_ALREADY_EXISTS);
         }
 
         User user = new User(null, signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()), signupRequest.getFirstName(), signupRequest.getLastName(), signupRequest.getPhoneNumber());

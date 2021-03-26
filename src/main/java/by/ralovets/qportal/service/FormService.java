@@ -6,6 +6,7 @@ import by.ralovets.qportal.dto.ResponseDTO;
 import java.util.List;
 
 public interface FormService {
+
     void addResponse(ResponseDTO dto);
 
     List<FieldDTO> getFields();

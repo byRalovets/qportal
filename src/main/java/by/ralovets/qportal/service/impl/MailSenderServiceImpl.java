@@ -17,14 +17,12 @@ public class MailSenderServiceImpl implements MailSenderService {
 
     @Async
     @Override
-    public void send(String mailTo, String subject, String message) {
+    public void send(String to, String subject, String text) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
 
-        String username = "lukashevitch.nikola@yandex.by";
-        mailMessage.setFrom(username);
-        mailMessage.setTo(mailTo);
+        mailMessage.setTo(to);
         mailMessage.setSubject(subject);
-        mailMessage.setText(message);
+        mailMessage.setText(text);
 
         mailSender.send(mailMessage);
     }

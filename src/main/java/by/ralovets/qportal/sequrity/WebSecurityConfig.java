@@ -1,4 +1,4 @@
-package by.ralovets.qportal.config;
+package by.ralovets.qportal.sequrity;
 
 import by.ralovets.qportal.sequrity.jwt.AuthEntryPointJwt;
 import by.ralovets.qportal.sequrity.jwt.AuthTokenFilter;

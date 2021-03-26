@@ -1,4 +1,4 @@
-package by.ralovets.qportal.controller;
+package by.ralovets.qportal.controller.util;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;

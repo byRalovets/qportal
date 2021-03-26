@@ -1,15 +1,16 @@
 package by.ralovets.qportal.service.impl;
 
+import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.dto.UpdatePasswordRequestDTO;
 import by.ralovets.qportal.dto.UpdateProfileRequestDTO;
-import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsImpl;
 import by.ralovets.qportal.service.MailSenderService;
 import by.ralovets.qportal.service.UserProfileService;
-import by.ralovets.qportal.service.exception.InvalidArgumentException;
+import by.ralovets.qportal.exception.InvalidArgumentException;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,17 +25,20 @@ import static java.util.Objects.isNull;
 public class UserProfileServiceImpl implements UserProfileService {
 
     private final AuthenticationManager authenticationManager;
-    private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
     private final MailSenderService mailSender;
+    private final UserRepository userRepository;
+
+    public static final String MSG_INVALID_PASSWORD = "Failed to update password. Check the sent data.";
+    public static final String MSG_INVALID_PROFILE_INFO = "Failed to update profile info. Check the sent data.";
 
     @Override
     public JwtResponseDTO updatePassword(UpdatePasswordRequestDTO updatePasswordRequest) throws InvalidArgumentException {
         if (isNull(updatePasswordRequest)
                 || isNull(updatePasswordRequest.getOldPassword())
                 || isNull(updatePasswordRequest.getNewPassword())) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException(MSG_INVALID_PASSWORD);
         }
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder
@@ -79,13 +83,11 @@ public class UserProfileServiceImpl implements UserProfileService {
     public JwtResponseDTO updateUser(UpdateProfileRequestDTO updateProfileRequest) throws InvalidArgumentException {
         if (isNull(updateProfileRequest)
                 || isNull(updateProfileRequest.getEmail())) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException(MSG_INVALID_PROFILE_INFO);
         }
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
-
-        JwtResponseDTO jwtResponse = new JwtResponseDTO();
 
         userRepository.findByEmail(userDetails.getEmail())
                 .ifPresent(user -> {
@@ -94,21 +96,22 @@ public class UserProfileServiceImpl implements UserProfileService {
                     user.setLastName(updateProfileRequest.getLastName());
                     user.setPhoneNumber(updateProfileRequest.getPhoneNumber());
                     userRepository.save(user);
-
-                    jwtResponse.setEmail(updateProfileRequest.getEmail());
-                    jwtResponse.setFirstName(updateProfileRequest.getFirstName());
-                    jwtResponse.setLastName(updateProfileRequest.getLastName());
                 });
 
-        String jwt = jwtUtils.generateJwtToken(SecurityContextHolder
-                .getContext().getAuthentication());
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(updateProfileRequest.getEmail(), updateProfileRequest.getPassword()));
 
-        userDetails = (UserDetailsImpl) (SecurityContextHolder
-                .getContext().getAuthentication().getPrincipal());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-        jwtResponse.setToken(jwt);
-        jwtResponse.setId(userDetails.getId());
+        userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        return jwtResponse;
+        return new JwtResponseDTO(
+                jwt,
+                userDetails.getId(),
+                userDetails.getEmail(),
+                userDetails.getFirstName(),
+                userDetails.getLastName()
+        );
     }
 }

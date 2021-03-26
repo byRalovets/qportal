@@ -1,4 +1,4 @@
-package by.ralovets.qportal.controller;
+package by.ralovets.qportal.controller.util;
 
 import java.security.Principal;
 import java.util.Objects;

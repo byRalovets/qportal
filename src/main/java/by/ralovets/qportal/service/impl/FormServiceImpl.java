@@ -2,6 +2,7 @@ package by.ralovets.qportal.service.impl;
 
 import by.ralovets.qportal.dto.FieldDTO;
 import by.ralovets.qportal.dto.ResponseDTO;
+import by.ralovets.qportal.model.Answer;
 import by.ralovets.qportal.model.Field;
 import by.ralovets.qportal.model.Option;
 import by.ralovets.qportal.model.Response;
@@ -17,11 +18,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static by.ralovets.qportal.dto.mapper.FieldMapper.mapToDTO;
 import static by.ralovets.qportal.dto.mapper.ResponseMapper.mapToAnswers;
 import static by.ralovets.qportal.service.util.IterableUtils.asList;
+import static by.ralovets.qportal.service.util.IterableUtils.asStream;
 
 @Service
 @AllArgsConstructor
@@ -37,19 +38,17 @@ public class FormServiceImpl implements FormService {
         Response response = new Response();
         responseRepository.save(response);
 
-        answerRepository.saveAll(
-                mapToAnswers(dto).stream()
-                        .peek(answer -> answer.setResponseId(response.getId()))
-                        .collect(Collectors.toList())
-        );
+        List<Answer> answers = mapToAnswers(dto);
+        answers.forEach(answer -> answer.setResponseId(response.getId()));
+
+        answerRepository.saveAll(answers);
     }
 
     @Override
     public List<FieldDTO> getFields() {
         List<FieldDTO> fieldDTOList = new ArrayList<>();
 
-        StreamSupport
-                .stream(fieldRepository.findAll(Sort.by("id")).spliterator(), false)
+        asStream(fieldRepository.findAll(Sort.by("id")))
                 .filter(Field::getIsActive)
                 .forEach(field -> {
                     List<Option> options = asList(optionRepository.findByFieldId(field.getId()));

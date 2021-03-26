@@ -1,6 +1,6 @@
-package by.ralovets.qportal.service.exception;
+package by.ralovets.qportal.exception;
 
-public class ResourceNotFoundException extends Exception {
+public class ResourceNotFoundException extends RuntimeException {
 
     public ResourceNotFoundException() {
         super();
