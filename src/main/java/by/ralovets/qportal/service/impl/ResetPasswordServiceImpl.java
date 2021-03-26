@@ -32,7 +32,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     private final PasswordEncoder encoder;
     private final JwtUtils jwtUtils;
 
-    private final String resetPasswordPath = "http://localhost:4200/reset-password?token=%s";
+    private final String resetPasswordPath = "https://qptl.herokuapp.com/reset-password?token=%s";
 
     private static final String MSG_SUBJECT = "Reset your password";
     private static final String MSG_TEXT_PATTERN = "To reset your password click this link:\n%s";
