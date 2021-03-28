@@ -15,12 +15,18 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(InvalidArgumentException.class)
     public void handleInvalidArgument(InvalidArgumentException e) {
-        log.warn(e.getMessage());
+        log.error(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public void handleNotFound(ResourceNotFoundException e) {
-        log.warn(e.getMessage());
+        log.error(e.getMessage());
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(WebsocketConnectionException.class)
+    public void handleNotFound(WebsocketConnectionException e) {
+        log.error(e.getMessage());
     }
 }

@@ -5,7 +5,11 @@ import by.ralovets.qportal.dto.LoginRequestDTO;
 import by.ralovets.qportal.dto.SignupRequestDTO;
 import by.ralovets.qportal.service.AuthService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @AllArgsConstructor
@@ -16,14 +20,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signin")
-    public JwtResponseDTO authenticateUser(
-            @RequestBody LoginRequestDTO loginRequest) {
+    public JwtResponseDTO authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
         return authService.login(loginRequest);
     }
 
     @PostMapping("/signup")
-    public JwtResponseDTO registerUser(
-            @RequestBody SignupRequestDTO signupRequest) {
+    public JwtResponseDTO registerUser(@RequestBody SignupRequestDTO signupRequest) {
         return authService.signup(signupRequest);
     }
 }

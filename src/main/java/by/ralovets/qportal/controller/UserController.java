@@ -5,14 +5,16 @@ import by.ralovets.qportal.dto.UpdatePasswordRequestDTO;
 import by.ralovets.qportal.dto.UpdateProfileRequestDTO;
 import by.ralovets.qportal.service.UserProfileService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/api/user")
 @AllArgsConstructor
 @RestController
-@Slf4j
 public class UserController {
 
     private final UserProfileService userProfileService;

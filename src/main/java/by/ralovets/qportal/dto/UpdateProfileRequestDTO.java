@@ -1,8 +1,12 @@
 package by.ralovets.qportal.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UpdateProfileRequestDTO {
 
     private String email;
@@ -10,15 +14,4 @@ public class UpdateProfileRequestDTO {
     private String lastName;
     private String phoneNumber;
     private String password;
-
-    public UpdateProfileRequestDTO() {
-    }
-
-    public UpdateProfileRequestDTO(String email, String firstName, String lastName, String phoneNumber, String password) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phoneNumber = phoneNumber;
-        this.password = password;
-    }
 }

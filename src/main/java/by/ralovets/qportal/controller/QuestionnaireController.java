@@ -6,7 +6,12 @@ import by.ralovets.qportal.dto.ResponseDTO;
 import by.ralovets.qportal.service.FormService;
 import by.ralovets.qportal.service.ResultService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -20,17 +25,17 @@ public class QuestionnaireController {
     private final ResultService resultService;
 
     @GetMapping
-    List<FieldDTO> getQuestionnaire() {
+    public List<FieldDTO> getQuestionnaire() {
         return formService.getFields();
     }
 
     @PostMapping
-    void newResponse(@RequestBody ResponseDTO responseDTO) {
+    public void newResponse(@RequestBody ResponseDTO responseDTO) {
         formService.addResponse(responseDTO);
     }
 
     @GetMapping("/headers")
-    List<FieldHeaderDTO> getFieldHeaders() {
+    public List<FieldHeaderDTO> getFieldHeaders() {
         return resultService.getFieldHeaders();
     }
 }

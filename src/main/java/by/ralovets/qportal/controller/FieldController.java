@@ -5,7 +5,16 @@ import by.ralovets.qportal.dto.FieldsPageDTO;
 import by.ralovets.qportal.service.FieldService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -18,31 +27,27 @@ public class FieldController {
     private final FieldService fieldService;
 
     @PostMapping
-    ResponseEntity<?> newField(@RequestBody FieldDTO newFieldDTO) {
-        return ResponseEntity.status(CREATED)
-                .body(fieldService.createField(newFieldDTO));
+    public ResponseEntity<?> newField(@RequestBody FieldDTO newFieldDTO) {
+        return ResponseEntity.status(CREATED).body(fieldService.createField(newFieldDTO));
     }
 
     @GetMapping
-    FieldsPageDTO getFields(
-            @RequestParam(defaultValue = "1") Integer page,
-            @RequestParam(defaultValue = "6") Integer count) {
+    public FieldsPageDTO getFields(@RequestParam(defaultValue = "1") Integer page, @RequestParam(defaultValue = "6") Integer count) {
         return fieldService.getAll(page, count);
     }
 
     @GetMapping("{id}")
-    FieldDTO getField(@PathVariable Integer id) {
+    public FieldDTO getField(@PathVariable Integer id) {
         return fieldService.getOne(id);
     }
 
     @PutMapping("{id}")
-    FieldDTO updateField(
-            @RequestBody FieldDTO newFieldDTO, @PathVariable Integer id) {
+    public FieldDTO updateField(@RequestBody FieldDTO newFieldDTO, @PathVariable Integer id) {
         return fieldService.updateField(newFieldDTO, id);
     }
 
     @DeleteMapping("{id}")
-    void deleteField(@PathVariable Integer id) {
+    public void deleteField(@PathVariable Integer id) {
         fieldService.deleteField(id);
     }
 }

@@ -4,13 +4,14 @@ import by.ralovets.qportal.model.util.FieldType;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import static by.ralovets.qportal.model.util.FieldType.*;
 
 public class FieldTypeUtils {
 
-    private static final List<FieldType> textualTypes = Arrays.asList(SINGLELINE, MULTILINE, DATE);
-    private static final List<FieldType> optionalTypes = Arrays.asList(RADIOBUTTON, CHECKBOX, COMBOBOX);
+    private static final Set<FieldType> textualTypes = Set.of(SINGLELINE, MULTILINE, DATE);
+    private static final Set<FieldType> optionalTypes = Set.of(RADIOBUTTON, CHECKBOX, COMBOBOX);
 
     private FieldTypeUtils() {
     }

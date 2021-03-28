@@ -4,10 +4,13 @@ import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.dto.ResetPasswordDTO;
 import by.ralovets.qportal.service.ResetPasswordService;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
 
-@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/reset-password")
@@ -17,13 +20,12 @@ public class PasswordResetController {
     private final ResetPasswordService resetPasswordService;
 
     @PostMapping
-    void newField(@RequestBody String email) {
+    public void newField(@RequestBody String email) {
         resetPasswordService.sendEmailLink(email);
     }
 
     @PutMapping
-    JwtResponseDTO resetPassword(
-            @RequestBody ResetPasswordDTO resetPasswordDTO) {
+    public JwtResponseDTO resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
         return resetPasswordService.resetPassword(resetPasswordDTO);
     }
 }

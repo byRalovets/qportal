@@ -1,11 +1,14 @@
 package by.ralovets.qportal.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 @Data
 public class User {
 
@@ -31,9 +34,6 @@ public class User {
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
-
-    public User() {
-    }
 
     public User(Long id, String email, String password, String firstName, String lastName, String phoneNumber) {
         this.id = id;

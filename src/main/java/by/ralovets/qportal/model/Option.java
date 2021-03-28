@@ -2,11 +2,13 @@ package by.ralovets.qportal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "field_options")
+@NoArgsConstructor
 @Data
 public class Option {
 
@@ -23,10 +25,8 @@ public class Option {
     @JoinColumn(name = "fo_field_id")
     private Field field;
 
-    public Option() {
-    }
-
     public Option(String text, Field field) {
         this.text = text;
+        this.field = field;
     }
 }

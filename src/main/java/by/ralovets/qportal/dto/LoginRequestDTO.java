@@ -1,18 +1,14 @@
 package by.ralovets.qportal.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class LoginRequestDTO {
 
     private String email;
     private String password;
-
-    public LoginRequestDTO() {
-    }
-
-    public LoginRequestDTO(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
 }

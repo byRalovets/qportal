@@ -1,12 +1,16 @@
 package by.ralovets.qportal.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "answers")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Answer {
 
     @Id
@@ -23,21 +27,7 @@ public class Answer {
     @Column(name = "a_text")
     private String text;
 
-    public Answer() {
-    }
-
-    public Answer(String text) {
-        this.text = text;
-    }
-
     public Answer(Integer fieldId, String text) {
-        this.fieldId = fieldId;
-        this.text = text;
-    }
-
-    public Answer(Long id, Long responseId, Integer fieldId, String text) {
-        this.id = id;
-        this.responseId = responseId;
         this.fieldId = fieldId;
         this.text = text;
     }
