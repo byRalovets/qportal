@@ -12,11 +12,8 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
 @Configuration
-@AllArgsConstructor
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-
-    private final RmeSessionChannelInterceptor rmeSessionChannelInterceptor;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -37,6 +34,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(rmeSessionChannelInterceptor);
+        registration.interceptors(rmeSessionChannelInterceptor());
+    }
+
+    @Bean
+    public RmeSessionChannelInterceptor rmeSessionChannelInterceptor() {
+        return new RmeSessionChannelInterceptor();
     }
 }

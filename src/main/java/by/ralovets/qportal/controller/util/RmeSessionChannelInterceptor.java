@@ -4,6 +4,8 @@ import by.ralovets.qportal.exception.WebsocketConnectionException;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsServiceImpl;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.SimpMessageType;
@@ -12,15 +14,19 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
 import java.util.Objects;
 
-@AllArgsConstructor
+@NoArgsConstructor
 public class RmeSessionChannelInterceptor implements ChannelInterceptor {
 
-    private final JwtUtils jwtUtils;
-    private final UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
+    private UserDetailsServiceImpl userDetailsService;
 
     private static final String MSG_INVALID_TOKEN = "Json web token is invalid! Connection wasn't established.";
 
