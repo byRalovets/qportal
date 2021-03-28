@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Valid;
+import javax.validation.Validation;
+import javax.validation.Validator;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/auth")
@@ -20,12 +25,12 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signin")
-    public JwtResponseDTO authenticateUser(@RequestBody LoginRequestDTO loginRequest) {
+    public JwtResponseDTO authenticateUser(@RequestBody @Valid LoginRequestDTO loginRequest) {
         return authService.login(loginRequest);
     }
 
     @PostMapping("/signup")
-    public JwtResponseDTO registerUser(@RequestBody SignupRequestDTO signupRequest) {
+    public JwtResponseDTO registerUser(@RequestBody @Valid SignupRequestDTO signupRequest) {
         return authService.signup(signupRequest);
     }
 }

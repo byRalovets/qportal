@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/reset-password")
@@ -25,7 +27,7 @@ public class PasswordResetController {
     }
 
     @PutMapping
-    public JwtResponseDTO resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+    public JwtResponseDTO resetPassword(@RequestBody @Valid ResetPasswordDTO resetPasswordDTO) {
         return resetPasswordService.resetPassword(resetPasswordDTO);
     }
 }

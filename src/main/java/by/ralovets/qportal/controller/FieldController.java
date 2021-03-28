@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.validation.Valid;
+
 import static org.springframework.http.HttpStatus.CREATED;
 
 @RestController
@@ -27,7 +29,7 @@ public class FieldController {
     private final FieldService fieldService;
 
     @PostMapping
-    public ResponseEntity<?> newField(@RequestBody FieldDTO newFieldDTO) {
+    public ResponseEntity<?> newField(@RequestBody @Valid FieldDTO newFieldDTO) {
         return ResponseEntity.status(CREATED).body(fieldService.createField(newFieldDTO));
     }
 
@@ -42,7 +44,7 @@ public class FieldController {
     }
 
     @PutMapping("{id}")
-    public FieldDTO updateField(@RequestBody FieldDTO newFieldDTO, @PathVariable Integer id) {
+    public FieldDTO updateField(@RequestBody @Valid FieldDTO newFieldDTO, @PathVariable Integer id) {
         return fieldService.updateField(newFieldDTO, id);
     }
 

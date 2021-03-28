@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,7 +31,7 @@ public class QuestionnaireController {
     }
 
     @PostMapping
-    public void newResponse(@RequestBody ResponseDTO responseDTO) {
+    public void newResponse(@RequestBody @Valid ResponseDTO responseDTO) {
         formService.addResponse(responseDTO);
     }
 

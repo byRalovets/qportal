@@ -9,6 +9,7 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -20,7 +21,7 @@ public class ResultsController {
 
     @MessageMapping("/responses")
     @SendToUser("/topic/greetings")
-    public ResultsPageDTO greeting(ResultsPageRequestDTO request, Principal principal) {
+    public ResultsPageDTO greeting(@Valid ResultsPageRequestDTO request, Principal principal) {
         resultService.addSubscriber(principal.getName(), request);
         return resultService.getResults(request.getPage(), request.getCount());
     }
