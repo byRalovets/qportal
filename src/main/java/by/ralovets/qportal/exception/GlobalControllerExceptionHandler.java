@@ -49,6 +49,7 @@ public class GlobalControllerExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserExistsException.class)
     public void handleNotFound(UserExistsException e) {
+        log.warn("KAKOГО HRENA NE RABOTAEШЬ");
         log.error(e.getMessage());
     }
 }
