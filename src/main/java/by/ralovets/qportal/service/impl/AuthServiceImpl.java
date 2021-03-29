@@ -5,6 +5,7 @@ import by.ralovets.qportal.dto.LoginRequestDTO;
 import by.ralovets.qportal.dto.SignupRequestDTO;
 import by.ralovets.qportal.exception.InvalidArgumentException;
 import by.ralovets.qportal.exception.ResourceNotFoundException;
+import by.ralovets.qportal.exception.UserExistsException;
 import by.ralovets.qportal.model.User;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
@@ -58,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponseDTO signup(SignupRequestDTO signupRequest) {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
-            throw new InvalidArgumentException(MSG_USER_ALREADY_EXISTS);
+            throw new UserExistsException(MSG_USER_ALREADY_EXISTS);
         }
 
         User user = new User(null, signupRequest.getEmail(), encoder.encode(signupRequest.getPassword()), signupRequest.getFirstName(), signupRequest.getLastName(), signupRequest.getPhoneNumber());

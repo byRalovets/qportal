@@ -46,4 +46,9 @@ public class GlobalControllerExceptionHandler {
         return errors;
     }
 
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(UserExistsException.class)
+    public void handleNotFound(UserExistsException e) {
+        log.error(e.getMessage());
+    }
 }
