@@ -76,8 +76,7 @@ public class AuthServiceImpl implements AuthService {
         mailSender.send(
                 signupRequest.getEmail(),
                 "Registration completed!",
-                String.format("Hi, %s %s! Welcome to our portal! Don't forget to pass our questionnaire!",
-                        userDetails.getFirstName(), userDetails.getLastName())
+                "Hi! Welcome to our portal! Don't forget to pass our questionnaire!"
         );
 
         return new JwtResponseDTO(

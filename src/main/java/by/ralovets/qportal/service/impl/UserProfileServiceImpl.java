@@ -66,8 +66,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         mailSender.send(
                 userDetails.getEmail(),
                 "Password successfully changed!",
-                String.format("Hi, %s %s! You've changed your password successfully! Don't forget to pass our questionnaire!",
-                        userDetails.getFirstName(), userDetails.getLastName())
+                "Hi! You've changed your password successfully! Don't forget to pass our questionnaire!"
         );
 
         return new JwtResponseDTO(
