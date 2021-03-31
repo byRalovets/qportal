@@ -1,8 +1,7 @@
 package by.ralovets.qportal.config;
 
 import by.ralovets.qportal.controller.util.CustomHandshakeHandler;
-import by.ralovets.qportal.controller.util.RmeSessionChannelInterceptor;
-import lombok.AllArgsConstructor;
+import by.ralovets.qportal.controller.util.WebsocketInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -34,11 +33,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(rmeSessionChannelInterceptor());
+        registration.interceptors(websocketInterceptor());
     }
 
     @Bean
-    public RmeSessionChannelInterceptor rmeSessionChannelInterceptor() {
-        return new RmeSessionChannelInterceptor();
+    public WebsocketInterceptor websocketInterceptor() {
+        return new WebsocketInterceptor();
     }
 }

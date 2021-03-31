@@ -2,6 +2,7 @@ package by.ralovets.qportal.sequrity.service;
 
 import by.ralovets.qportal.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -10,9 +11,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
+@ToString
 public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
+
+    private static final String USER_ROLE = "ROLE_USER";
 
     private final Long id;
 
@@ -38,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(User user) {
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(USER_ROLE));
 
         return new UserDetailsImpl(
                 user.getId(),
@@ -98,15 +102,5 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
-        UserDetailsImpl user = (UserDetailsImpl) o;
-        return Objects.equals(id, user.id);
     }
 }

@@ -8,6 +8,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 
+/**
+ * Represents a Java enumerable type that corresponds to a custom enumeration type in PostgreSQL.
+ *
+ * @author Anton Ralovets
+ * @since 1.0
+ */
 public class PostgreSQLEnumType extends EnumType<FieldType> {
 
     public void nullSafeSet(

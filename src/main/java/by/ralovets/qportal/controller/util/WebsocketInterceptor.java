@@ -20,7 +20,7 @@ import org.springframework.util.MultiValueMap;
 import java.util.Objects;
 
 @NoArgsConstructor
-public class RmeSessionChannelInterceptor implements ChannelInterceptor {
+public class WebsocketInterceptor implements ChannelInterceptor {
 
     @Autowired
     private JwtUtils jwtUtils;
