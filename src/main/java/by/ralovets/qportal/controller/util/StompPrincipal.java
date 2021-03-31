@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.security.Principal;
 
+/**
+ * Used to identify user connected via websocket.
+ */
 @Data
 @AllArgsConstructor
 @ToString

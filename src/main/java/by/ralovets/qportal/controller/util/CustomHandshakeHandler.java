@@ -8,6 +8,9 @@ import java.security.Principal;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * Used to identify users connected via websocket.
+ */
 public class CustomHandshakeHandler extends DefaultHandshakeHandler {
 
     @Override

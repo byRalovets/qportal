@@ -2,7 +2,6 @@ package by.ralovets.qportal.repository;
 
 import by.ralovets.qportal.model.User;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

@@ -3,7 +3,6 @@ package by.ralovets.qportal.controller.util;
 import by.ralovets.qportal.exception.WebsocketConnectionException;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsServiceImpl;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -14,11 +13,13 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Objects;
+import static java.util.Objects.isNull;
 
+/**
+ * Used to authorize users connected via websocket.
+ */
 @NoArgsConstructor
 public class WebsocketInterceptor implements ChannelInterceptor {
 
@@ -53,12 +54,20 @@ public class WebsocketInterceptor implements ChannelInterceptor {
     }
 
     private SimpMessageType getMessageType(Message<?> message) {
-        return SimpMessageType.valueOf(Objects.requireNonNull(message.getHeaders().get("simpMessageType")).toString());
+        Object messageTypeHeader = message.getHeaders().get("simpMessageType");
+        if (isNull(messageTypeHeader)) return null;
+
+        return SimpMessageType.valueOf(messageTypeHeader.toString());
     }
 
     private String parseJwt(Message<?> message) {
-        return Objects.requireNonNull(message.getHeaders().get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class))
-                .get("jwt-token").toString()
+        MultiValueMap headers = message.getHeaders().get(StompHeaderAccessor.NATIVE_HEADERS, MultiValueMap.class);
+        if (isNull(headers)) return null;
+
+        Object rawJwt = headers.get("jwt-token");
+        if (isNull(rawJwt)) return null;
+
+        return rawJwt.toString()
                 .replaceAll("[\\[\\]]", "");
     }
 }

@@ -17,8 +17,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.validation.Valid;
 
 @Service
 @AllArgsConstructor
@@ -34,9 +37,9 @@ public class AuthServiceImpl implements AuthService {
     private static final String MSG_USER_ALREADY_EXISTS = "Email is already in use!";
 
     @Override
-    public JwtResponseDTO login(LoginRequestDTO loginRequest) {
+    public JwtResponseDTO login(@Valid LoginRequestDTO loginRequest) {
         if (!userRepository.existsByEmail(loginRequest.getEmail())) {
-            throw new ResourceNotFoundException(MSG_USER_NOT_FOUND);
+            throw new UsernameNotFoundException(MSG_USER_NOT_FOUND);
         }
 
         Authentication authentication = authenticationManager.authenticate(
@@ -57,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public JwtResponseDTO signup(SignupRequestDTO signupRequest) {
+    public JwtResponseDTO signup(@Valid SignupRequestDTO signupRequest) {
         if (userRepository.existsByEmail(signupRequest.getEmail())) {
             throw new UserExistsException(MSG_USER_ALREADY_EXISTS);
         }

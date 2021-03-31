@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -54,7 +55,7 @@ public class ResetPasswordServiceImpl implements ResetPasswordService {
     }
 
     @Override
-    public JwtResponseDTO resetPassword(ResetPasswordDTO resetPasswordDTO) throws ResourceNotFoundException {
+    public JwtResponseDTO resetPassword(@Valid ResetPasswordDTO resetPasswordDTO) throws ResourceNotFoundException {
         Optional<User> userOptional = userRepository.findByResetPasswordToken(resetPasswordDTO.getToken());
 
         if (userOptional.isEmpty())

@@ -73,6 +73,9 @@ public class ResultServiceImpl implements ResultService {
         subscribersMap.put(username, request);
     }
 
+    /**
+     * Sends messages with responses to all subscribed users.
+     */
     public void sendResponses() {
         List<ResponseDTO> responses = asStream(responseRepository.findAll())
                 .map(response -> ResponseMapper.mapToDTO(asList(answerRepository.findByResponseId(response.getId()))

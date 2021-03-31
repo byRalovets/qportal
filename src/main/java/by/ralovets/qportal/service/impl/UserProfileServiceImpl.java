@@ -3,14 +3,13 @@ package by.ralovets.qportal.service.impl;
 import by.ralovets.qportal.dto.JwtResponseDTO;
 import by.ralovets.qportal.dto.UpdatePasswordRequestDTO;
 import by.ralovets.qportal.dto.UpdateProfileRequestDTO;
+import by.ralovets.qportal.exception.InvalidArgumentException;
 import by.ralovets.qportal.repository.UserRepository;
 import by.ralovets.qportal.sequrity.jwt.JwtUtils;
 import by.ralovets.qportal.sequrity.service.UserDetailsImpl;
 import by.ralovets.qportal.service.MailSenderService;
 import by.ralovets.qportal.service.UserProfileService;
-import by.ralovets.qportal.exception.InvalidArgumentException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static java.util.Objects.isNull;
+import javax.validation.Valid;
 
 @Service
 @AllArgsConstructor
@@ -30,16 +29,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     private final MailSenderService mailSender;
     private final UserRepository userRepository;
 
-    public static final String MSG_INVALID_PASSWORD = "Failed to update password. Check the sent data.";
-    public static final String MSG_INVALID_PROFILE_INFO = "Failed to update profile info. Check the sent data.";
-
     @Override
-    public JwtResponseDTO updatePassword(UpdatePasswordRequestDTO updatePasswordRequest) throws InvalidArgumentException {
-        if (isNull(updatePasswordRequest)
-                || isNull(updatePasswordRequest.getOldPassword())
-                || isNull(updatePasswordRequest.getNewPassword())) {
-            throw new InvalidArgumentException(MSG_INVALID_PASSWORD);
-        }
+    public JwtResponseDTO updatePassword(@Valid UpdatePasswordRequestDTO updatePasswordRequest) throws InvalidArgumentException {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
@@ -49,11 +40,10 @@ public class UserProfileServiceImpl implements UserProfileService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        userRepository.findByEmail(userDetails.getEmail())
-                .ifPresent(user -> {
+        userRepository.findByEmail(userDetails.getEmail()).ifPresent(user -> {
                     user.setPassword(encoder.encode(updatePasswordRequest.getNewPassword()));
                     userRepository.save(user);
-                });
+        });
 
         authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDetails.getEmail(), updatePasswordRequest.getNewPassword()));
@@ -79,11 +69,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
-    public JwtResponseDTO updateUser(UpdateProfileRequestDTO updateProfileRequest) throws InvalidArgumentException {
-        if (isNull(updateProfileRequest)
-                || isNull(updateProfileRequest.getEmail())) {
-            throw new InvalidArgumentException(MSG_INVALID_PROFILE_INFO);
-        }
+    public JwtResponseDTO updateUser(@Valid UpdateProfileRequestDTO updateProfileRequest) throws InvalidArgumentException {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder
                 .getContext().getAuthentication().getPrincipal();
