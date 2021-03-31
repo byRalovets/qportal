@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static by.ralovets.qportal.dto.mapper.FieldMapper.*;
-import static by.ralovets.qportal.service.impl.validator.FieldServiceValidator.validateFieldDTO;
 import static by.ralovets.qportal.service.util.FieldTypeUtils.*;
 import static by.ralovets.qportal.service.util.IterableUtils.asList;
 import static java.util.Objects.requireNonNullElse;
@@ -37,8 +36,6 @@ public class FieldServiceImpl implements FieldService {
 
     private static final String MSG_FIELD_NOT_FOUND = "Field not found! Check if the id is correct.";
     private static final String MSG_ERR_PAGE_OR_COUNT = "Page number and fields count must be more than 0!";
-    private static final String MSG_FIELD_NOT_CREATED = "The field cannot be created. Check the request!";
-    private static final String MSG_FIELD_NOT_UPDATED = "The field cannot be updated. Check the request!";
 
     /**
      * Creates field in database.
@@ -48,8 +45,6 @@ public class FieldServiceImpl implements FieldService {
      */
     @Override
     public FieldDTO createField(FieldDTO fieldDTO) {
-        if (!validateFieldDTO(fieldDTO))
-            throw new InvalidArgumentException(MSG_FIELD_NOT_CREATED);
 
         Field field = mapToField(fieldDTO);
         fieldRepository.save(field);
@@ -72,9 +67,6 @@ public class FieldServiceImpl implements FieldService {
     @Override
     public FieldDTO updateField(FieldDTO fieldDTO, Integer id) {
         fieldDTO.setId(id);
-
-        if (!validateFieldDTO(fieldDTO))
-            throw new InvalidArgumentException(MSG_FIELD_NOT_UPDATED);
 
         Field newField = mapToField(fieldDTO);
         final List<Option> newOptions = requireNonNullElse(mapToOptions(fieldDTO), new ArrayList<>());
